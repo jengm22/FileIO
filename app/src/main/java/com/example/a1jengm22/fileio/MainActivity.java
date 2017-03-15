@@ -25,31 +25,41 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        if(item.getItemId() == R.id.save)
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.save)
         {
             // react to the menu item being selected...
-            try
-            {
+            try {
                 PrintWriter pw =
-                        new PrintWriter( new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/data.txt"));
+                        new PrintWriter(new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/data.txt"));
 
-                EditText text = (EditText)findViewById(R.id.text);
+                EditText text = (EditText) findViewById(R.id.text);
 
                 pw.println(text.getText().toString());
 
                 pw.close(); // close the file to ensure data is flushed to file
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 new AlertDialog.Builder(this).setMessage("ERROR: " + e).
                         setPositiveButton("OK", null).show();
             }
 
             return true;
         }
-        return false;
+        else if (item.getItemId() == R.id.load) {
+            // react to the menu item being selected
+            EditText eText = (EditText) findViewById(R.id.text);
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/data.txt"));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    eText.setText(eText.getText()+ line);
+                }
+            } catch (IOException e) {
+                System.out.println("ERROR: " + e);
+
+            }
+        }
+            return false;
     }
 
 
